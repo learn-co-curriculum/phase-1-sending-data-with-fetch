@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sample Form</title>
+    <style type="text/css" media="all">
+      input[type="text"] { margin: 1em 5em; }
+    </style>
+  </head>
+  <body>
+    <h1>Sample Form</h1>
+    <form action="http://example.com/dog_logger" method="POST">
+      <label> Dog Name: <input type="text" name="dogName" id="dogName" /></label><br/>
+      <label> Dog Breed: <input type="text" name="dogBreed" id="dogBreed" /></label><br/>
+      <input type="submit" name="submit" id="submit" value="Submit" />
+    </form>
+    <script charset="utf-8" type="application/javascript">
+      document.querySelector("form").addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let formValues = new FormData(e.target);
+
+        fetch("http://example.com/dog_counter", {
+          method: 'POST',
+          body: formValues
+        }).then( e => console.log(e) );
+      });
+    </script>
+  </body>
+</html>
