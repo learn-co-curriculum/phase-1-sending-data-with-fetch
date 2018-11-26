@@ -6,7 +6,7 @@
 
 ## Introduction
 
-If you think about it, `fetch()` is a little browser in in your browser. You
+If you think about it, `fetch()` is a little browser in your browser. You
 tell `fetch()` to go to a URL by passing it an argument e.g.
 `fetch("https://flatironschool.com")` and it makes a network request. You can
 then chain calls to `then()` with callback functions and get the content out.
