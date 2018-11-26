@@ -53,6 +53,14 @@ inside our `form()` skeleton.
 
 ### Make POST Request using `fetch()`
 
+The most basic `fetch()` call is _slightly_ more complicated than we've seen to this
+point. It still takes a `String` representing the desintation URL as the first argument,
+as always. But now we see that `fetch()` can also take a JavaScript `Object` (`{}`) as
+the _second_ argument. This `Object` can be given certain [properties][p] with certain values
+in order to change `fetch()`'s default behavior.
+
+[p]: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters
+
 ```js
 fetch(destinationURL, configurationObject)
   .then(...)
@@ -94,7 +102,7 @@ fetch("http://example.com/dog_logger" , configObj)
 
 ### Handling What Happens After
 
-Just like when we use `fetch()` to gather data, we have to handle responses to
+Just like when we use `fetch()` to retrieve (or, `GET`) data, we have to handle responses to
 `fetch()` sending data with a series of calls to `then()` which are given
 function _callbacks_.
 
@@ -103,11 +111,11 @@ Building on the previous implementation we might:
 ```js
 fetch("http://example.com/dog_logger" , configObj)
   .then(function(response) {
-    return response.text()
+    return response.text();
   })
   .then(function(content){
     if (response == "OK") {
-      console.log("Added a new dog!")
+      console.log("Added a new dog!");
     }
   })
 ```
@@ -140,9 +148,12 @@ for log_dogger";
   })
 ```
 
+That's it!
+
 ## Challenge
 
 In this lab, you need to satisfy the tests that will make sure your `fetch()`
+skills are ready to go.
 
 ### Test 1
 
@@ -168,7 +179,7 @@ You should write this code inside the `errorSelf()` function.
 
 ## Conclusion
 
-Congratulations, you can now use `fetch()` the browser inside your browser's
+Congratulations, you can now use `fetch()`: the browser inside your browser's
 JavaScript environment to both:
 
 * READ data using HTTP GET  (whose response you can put into the DOM)
