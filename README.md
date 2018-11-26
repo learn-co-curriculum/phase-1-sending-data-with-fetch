@@ -9,7 +9,8 @@
 If you think about it, `fetch()` is a little browser in your browser. You
 tell `fetch()` to go to a URL by passing it an argument e.g.
 `fetch("https://flatironschool.com")` and it makes a network request. You can
-then chain calls to `then()` with callback functions and get the content out.
+then chain calls to `then()`, where each call takes a callback function as argument
+and get the content out.
 
 This is a lot like browsing the web: you change the URL in the URL bar, or you
 follow a link and those actions tell the browser to go somewhere else and get
