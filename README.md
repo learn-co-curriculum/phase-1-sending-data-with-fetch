@@ -10,21 +10,23 @@ If you think about it, `fetch()` is a little browser in your browser. You
 tell `fetch()` to go to a URL by passing it an argument e.g.
 `fetch("https://flatironschool.com")` and it makes a network request. You can
 then chain calls to `then()`, where each call takes a callback function as argument
-and get the content out.
+and get the content out somewhere where we can edit it or see it.
 
 This is a lot like browsing the web: you change the URL in the URL bar, or you
 follow a link and those actions tell the browser to go somewhere else and get
 the data. A technical way to describe that is: "The browser implements an HTTP
-`GET` to retrieve the content specified by a URL." It's also 100% technically
-right to say "`fetch()` uses an HTTP `GET` to retrieve the content specified by a
+`GET` to retrieve the content at a URL." It's also 100% technically
+correct to say "`fetch()` uses an HTTP `GET` to retrieve the content specified by a
 URL."
 
-The browser also provides a helpful image for what _sending_ data from the
-browser to a remote server looks like. Things that _send_ data to servers are
-said, technically speaking, to be "using an HTTP `POST` to send content to a
-specified URL." We experience this in the browser as an HTML _form_: the thing
-we specify with a `<form>` tag that's filled up with `<input>` elements. Our
-focus this lesson will be to learn how to emulate an HTML `<form>` with
+The browser also provides a helpful model for understanding what _sending_ data
+from the browser looks like. We know this as an HTML _form_. Technically speaking,
+HTML forms "use an HTTP `POST` to send content gathered in `<input>`
+elements to a specified URL" It's also 100% technically correct to say "`fetch()`
+uses an HTTP `POST` to send content gathered in a JavaScript `Object` to a specified
+URL.
+
+Our focus this lesson will be to learning how to emulate an HTML `<form>` with
 `fetch()`.
 
 ### Analyze Data Sent in an HTML Form
