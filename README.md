@@ -45,7 +45,7 @@ The key components as far as sending data to the server are:
 
 * The destination URL as defined in the `action` attribute of the `<form>` tag
 * The HTTP verb to use as defined in the `method` attribute of the `<form>` tag
-* The key / value data about the inputs in the fields `dogName` and `dogBreed`.
+* The key / value data about the inputs in the fields `dogName` and `dogBreed`
 
 We should expect that our "mini-browser," `fetch()` will need those same bits
 of information in order to send data to the server. Let's place this data
@@ -124,7 +124,7 @@ fetch("http://example.com/dog_logger" , configObj)
 
 When something goes wrong in a `fetch()` request, JavaScript will look down the
 chain of `.then()` calls for something very similar to a `then()` called a
-`catch()`.  When something goes wrong in a `fetch()`, the next `catch()` is
+`catch()`. When something goes wrong in a `fetch()`, the next `catch()` is
 called so that error work can be performed. Let's imagine that someone makes a
 typo and changes the URL to be: `"http://example.com/log_dogger"`  instead of
 `dog_logger`. It's always a good idea to provide a `catch()` statement so that
@@ -179,12 +179,12 @@ You should write this code inside the `errorSelf()` function.
 
 ## Conclusion
 
-Congratulations, you can now use `fetch()`: the browser inside your browser's
+Congratulations! You can now use `fetch()`: the browser inside your browser's
 JavaScript environment to both:
 
 * READ data using HTTP GET  (whose response you can put into the DOM)
 * SEND data using HTTP POST (whose response you can put into the DOM)
 
 With this we're ready to to stitch server updates (reads **and** updates) with
-DOM updating and event handling, we're almost ready to build the "Simple
+DOM updating and event handling. We're almost ready to build the "Simple
 Looker" from scratch!
