@@ -21,11 +21,12 @@ describe( "submitData()", () => {
 
   it( "makes a POST request to /user with a name and email", async () => {
     let reqBody
-
+    let headers
     nock( 'http://localhost:3000' )
       .post( '/users' )
       .reply( 201, function ( uri, requestBody ) {
         reqBody = requestBody
+        headers = this.req.headers
         return {
           id: rando,
           ...requestBody
@@ -36,11 +37,15 @@ describe( "submitData()", () => {
     let email = "steve@steve.com"
 
     await submitData( name, email )
-
+    console.log( headers );
     expect( window.fetch, "A fetch to the API was not found" )
       .to.have.been.called.with( 'http://localhost:3000/users' );
     expect( window.fetch )
       .to.have.been.called.exactly( 1 );
+    expect( headers[ 'content-type' ][ 0 ] )
+      .to.equal( 'application/json' )
+    expect( headers[ 'accept' ][ 0 ] )
+      .to.equal( 'application/json' )
     expect( Object.keys( reqBody ), "The request body should only have 'name' and 'email' key/value pairs" )
       .to.deep.equal( [ "name", "email" ] )
     expect( reqBody.name, "The 'name' property was not found in the request body" )
