@@ -408,8 +408,12 @@ your `fetch()`.
 
 ### Test 1 - Send Data
 
-In `submitData`, write a `fetch()` request that sends the user's name and email
-to `http://localhost:3000/users`.
+In `submitData`, write a `fetch()` request to `http://localhost:3000/users`.
+Take the user's name and email passed in as arguments and include them in an
+object assigned to the keys `name` and `email`.
+
+The request should send the _stringified_ version of this object as the body
+of the POST request.
 
 ### Test 2 - Handle the Response
 
