@@ -159,7 +159,7 @@ configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   }
 };
 ```
@@ -232,7 +232,7 @@ configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   },
   body: JSON.stringify({
     dogName: "Byron",
@@ -250,7 +250,7 @@ fetch("http://localhost:3000/dogs", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   },
   body: JSON.stringify({
     dogName: "Byron",
@@ -276,7 +276,7 @@ let configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   },
   body: JSON.stringify(formData)
 };
@@ -309,7 +309,7 @@ let configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   },
   body: JSON.stringify(formData)
 };
@@ -362,7 +362,7 @@ let formData = {
 let configObj = {
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
+    "Accept": "application/json"
   },
   body: JSON.stringify(formData)
 };
