@@ -20,9 +20,12 @@ describe( "submitData()", () => {
   } );
 
   it( "makes a POST request to /user with a name and email", async () => {
+    let reqBody
+
     nock( 'http://localhost:3000' )
       .post( '/users' )
       .reply( 201, function ( uri, requestBody ) {
+        reqBody = requestBody
         return {
           id: rando,
           name: requestBody.name,
@@ -39,7 +42,10 @@ describe( "submitData()", () => {
       .to.have.been.called.with( 'http://localhost:3000/users' );
     expect( window.fetch )
       .to.have.been.called.exactly( 1 );
-
+    expect( reqBody.name )
+      .to.eq( "Steve" )
+    expect( reqBody.email )
+      .to.eq( "steve@steve.com" )
   } )
 
   it( "handles the POST request response, retrieves the new id value and appends it to the DOM", async function () {
