@@ -1,44 +1,81 @@
-const helpers = require('./helpers');
+require( './setup' );
 const chai = require( 'chai' );
 const spies = require( 'chai-spies' );
 const nock = require( 'nock' );
-const verlain = "Lbh unir orra nqqrq gb gur thrfg obbx";
-
 chai.use( spies );
 
-describe("index.js", () => {
-  beforeEach(function() {
+describe( "submitData()", () => {
+  let rando
+  let xhr, requests
+  beforeEach( function () {
     window.fetch = require( 'node-fetch' );
 
-    nock( 'http://guestbook.example.com' )
-      .post( '/register' )
-      .reply( 200, {
-        "message": global.rot13(verlain),
-      });
+    rando = Math.ceil( Math.random() * 1000 )
 
-    nock( 'http://guestbook.example.com' )
-      .post( '/register-error' )
-      .reply(404);
+
 
     chai.spy.on( window, 'fetch' );
     window.onerror = undefined;
-  });
 
-  it("makes a request to /register with a name and a message", async () => {
-    let message = await registerSelf();
+  } );
 
-    expect(window.fetch, "A fetch to the API was not found" ).to.have.been.called.with( 'http://guestbook.example.com/register' );
-    expect(window.fetch ).to.have.been.called.exactly( 1 );
-    expect(message).to.eq(global.rot13(verlain));
-  })
+  it( "makes a POST request to /user with a name and email", async () => {
+    nock( 'http://localhost:3000' )
+      .post( '/users' )
+      .reply( 201, function ( uri, requestBody ) {
+        return {
+          id: rando,
+          name: requestBody.name,
+          email: requestBody.email,
+        }
+      } );
 
-  it("processes the returned JSON and extracts the value of the 'message' key", async function() {
-    let message = await registerSelf();
-    expect(message).to.eq(global.rot13(verlain));
-  });
+    let name = "Steve"
+    let email = "steve@steve.com"
 
-  it("processes a bad request and returns a sad face", async function() {
-    let message = await errorSelf();
-    expect(message).to.eq(":(");
-  });
-})
+    await submitData( name, email )
+
+    expect( window.fetch, "A fetch to the API was not found" )
+      .to.have.been.called.with( 'http://localhost:3000/users' );
+    expect( window.fetch )
+      .to.have.been.called.exactly( 1 );
+
+  } )
+
+  it( "handles the POST request response, retrieves the new id value and appends it to the DOM", async function () {
+    nock( 'http://localhost:3000' )
+      .post( '/users' )
+      .reply( 201, function ( uri, requestBody ) {
+        return {
+          id: rando,
+          name: requestBody.name,
+          email: requestBody.email,
+        }
+      } );
+
+    let name = "Sam"
+    let email = "sam@sam.com"
+
+    await submitData( name, email )
+
+    expect( document.body.innerHTML )
+      .to.include( rando )
+  } );
+
+  it( "handles a failed POST request using catch, appends the error message to the DOM", async function () {
+    let message = 'Unauthorized Access'
+    nock( 'http://localhost:3000' )
+      .post( '/users' )
+      .replyWithError( {
+        message: message,
+        code: '401',
+      } )
+
+    let name = "Jim"
+    let email = "jim@jim.com"
+
+    await submitData( name, email )
+    expect( document.body.innerHTML )
+      .to.include( message )
+  } )
+} )
