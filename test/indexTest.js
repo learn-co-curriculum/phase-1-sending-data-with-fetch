@@ -28,8 +28,7 @@ describe( "submitData()", () => {
         reqBody = requestBody
         return {
           id: rando,
-          name: requestBody.name,
-          email: requestBody.email,
+          ...requestBody
         }
       } );
 
@@ -42,9 +41,11 @@ describe( "submitData()", () => {
       .to.have.been.called.with( 'http://localhost:3000/users' );
     expect( window.fetch )
       .to.have.been.called.exactly( 1 );
-    expect( reqBody.name )
+    expect( Object.keys( reqBody ), "The request body should only have 'name' and 'email' key/value pairs" )
+      .to.deep.equal( [ "name", "email" ] )
+    expect( reqBody.name, "The 'name' property was not found in the request body" )
       .to.eq( "Steve" )
-    expect( reqBody.email )
+    expect( reqBody.email, "The 'email' property was not found in the request body" )
       .to.eq( "steve@steve.com" )
   } )
 
@@ -54,8 +55,7 @@ describe( "submitData()", () => {
       .reply( 201, function ( uri, requestBody ) {
         return {
           id: rando,
-          name: requestBody.name,
-          email: requestBody.email,
+          ...requestBody
         }
       } );
 
