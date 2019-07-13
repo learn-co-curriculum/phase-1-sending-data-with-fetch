@@ -40,7 +40,7 @@ called [`json-server`][json-server]. The JSON Server allows us to spin up a fake
 RESTful API within our lab folder, giving us the ability to send both GET and
 POST requests and to persist and receive data. After running `npm install` or
 `learn` for the first time, to start up JSON Server, run
-`json-server --watch db.json` in your console. Once the server is running,
+`json-server --watch db.json` in your terminal. Once the server is running,
 you'll see a list of available resource paths:
 
 ```bash
