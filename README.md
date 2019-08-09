@@ -451,7 +451,7 @@ JavaScript environment to both:
 
 With this we're ready to to stitch server updates (reads **and** updates) with
 DOM updating and event handling. We're almost ready to build the "Simple
-Looker" from scratch!
+Liker" from scratch!
 
 [json-server]: https://github.com/typicode/json-server
 [p]: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters
