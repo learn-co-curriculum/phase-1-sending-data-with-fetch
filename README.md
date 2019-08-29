@@ -218,7 +218,7 @@ The object above, converted to JSON would look like this:
 "{"dogName":"Byron","dogBreed":"Poodle"}"
 ```
 
-Here, using JSON has enabled us to preserve they key/value pairs of our object
+Here, using JSON has enabled us to preserve the key/value pairs of our object
 within the string. When sent to a server, the server will be able to take this
 string and convert it back into key/value pairs in whatever language the server
 is written in.
