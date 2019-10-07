@@ -444,6 +444,13 @@ When writing the callback function for your `catch()`, expect to receive an
 object on error with a property, `message`, containing info about what went
 wrong. Append this message to the DOM when `catch()` is called.
 
+### Test 4 - Return the Fetch Chain
+
+An amazing feature of `fetch()` is that if you _return_ it, _other_ functions
+can tack-on _their own_ `then()` and `catch()` calls. While we won't explore
+this amazing idea in this lesson, let's learn good habits and be sure to return
+the `fetch()` chain from our `submitData` function.
+
 ## Conclusion
 
 Congratulations! You can now use `fetch()`: the browser inside your browser's
