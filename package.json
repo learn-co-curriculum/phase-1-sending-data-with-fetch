@@ -22,7 +22,7 @@
     "chai-spies": "^1.0.0",
     "mocha-jsdom": "^2.0.0",
     "nock": "^10.0.2",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "sinon": "^7.3.1"
   }
 }
