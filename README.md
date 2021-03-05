@@ -9,11 +9,11 @@
 ## Introduction
 
 If you think about it, `fetch()` is a little browser in your browser. You tell
-`fetch()` to go to a URL by passing it an argument e.g.
-`fetch("https://flatironschool.com")` and it makes a network request. You
+`fetch()` to go to a URL by passing it an argument, e.g.
+`fetch("https://flatironschool.com")`, and it makes a network request. You
 chain calls to `fetch()` with `then()`. Each `then()` call takes a callback
-function as its argument, based on actions in the callback function, we can
-display the content, update it, or inject it into the DOM.
+function as its argument. Based on actions in the callback function, we can
+display or update content in the DOM.
 
 This is a lot like browsing the web: you change the URL in the URL bar, or you
 follow a link and those actions tell the browser to go somewhere else and get
@@ -24,13 +24,14 @@ say "`fetch()` uses an HTTP `GET` to retrieve the content specified by a URL."
 The browser also provides a helpful model for understanding what _sending_ data
 from the browser looks like. We know this as an HTML _form_. Technically
 speaking, HTML forms "use an HTTP `POST` to send content gathered in `<input>`
-elements to a specified URL" It's also 100% technically correct to say
-"`fetch()` uses an HTTP `POST` to send content gathered in a JavaScript `Object`
+elements to a specified URL." It's also 100% technically correct to say
+"`fetch()` uses an HTTP `POST` to send content gathered in a JavaScript
+`Object`."
 
 HTML forms are still widely used, but with `fetch()`, we have more detailed
 control of the request. Using `fetch()`, we can actually _override_ the normal
-behavior of an HTML form, capturing any user input, packaging it up with
-the appropriate request information and sending it out.
+behavior of an HTML form, capture any user input, package it up with the
+appropriate request information and send it out.
 
 Our focus this lesson will be to learning how to send data using `fetch()`.
 
@@ -42,9 +43,9 @@ RESTful API within our lab folder, giving us the ability to send both GET and
 POST requests and to persist and receive data.
 
 Install it by executing `npm install -g json-server`. (If this command errors
-out, you may need to run `sudo npm install -g json-server` instead; you will likely need to provide your
-system password.) To start up JSON Server, run `json-server --watch db.json` in
-your terminal.
+out, you may need to run `sudo npm install -g json-server` instead; you will
+likely also need to provide your system password.) To start up JSON Server, run
+`json-server --watch db.json` in your terminal.
 
 Once the server is running, you'll see a list of available resource paths:
 
@@ -220,7 +221,7 @@ assign it to `body`, as it isn't a string. Instead, we convert it to JSON.
 The object above, converted to JSON would look like this:
 
 ```json
-"{"dogName":"Byron","dogBreed":"Poodle"}"
+'{"dogName":"Byron","dogBreed":"Poodle"}'
 ```
 
 Here, using JSON has enabled us to preserve the key/value pairs of our object
@@ -272,12 +273,12 @@ Obviously, we don't have to define everything inside of one anonymous `Object`.
 We could also write (they're exactly the same!):
 
 ```js
-let formData = {
+const formData = {
   dogName: "Byron",
   dogBreed: "Poodle"
 };
 
-let configObj = {
+const configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -399,15 +400,15 @@ a message in the DOM for a user, rather than leave them with nothing.
 ## Challenge
 
 It's time to practice writing your own POST request using `fetch()`. In
-`index.js`, write a function, `submitData`, that takes two strings arguments, one
-representing a user's name and the other representing a user's email.
+`index.js`, write a function, `submitData`, that takes two strings as arguments,
+one representing a user's name and the other representing a user's email.
 
 The first two tests mirror the behavior of the JSON server. As you write your
 solution, keep the server running to test your code. Open `index.html` in a
 browser to gain access to your `submitData` function in console.
 
 **Note**: The tests in this lab need access to the `fetch()` request inside
-`submitData`. In order to give them access, write you solution so that
+`submitData`. In order to give them access, write your solution so that
 `submitData` _returns_ the `fetch()`. This will not change the behavior of
 your `fetch()`.
 
@@ -417,7 +418,7 @@ In `submitData`, write a valid POST request to `http://localhost:3000/users`
 using `fetch()`. This request should include:
 
 - The destination URL
-- Headers for 'Content-Type' and 'Accept' set to 'application/json'
+- Headers for 'Content-Type' and 'Accept', both set to 'application/json'
 - A body with the name and email passed in as arguments to `submitData`. These
   should be assigned to `name` and `email` keys within an object. This object
   should then be stringified.
@@ -455,13 +456,13 @@ the `fetch()` chain from our `submitData` function.
 
 ## Conclusion
 
-Congratulations! You can now use `fetch()`: the browser inside your browser's
-JavaScript environment to both:
+Congratulations! You can now use `fetch()` — the browser inside your browser's
+JavaScript environment — to both:
 
-- READ data using HTTP GET (whose response you can put into the DOM)
-- SEND data using HTTP POST (whose response you can put into the DOM)
+- READ data using HTTP GET (and use the response to update the DOM)
+- SEND data using HTTP POST (and use the response to update the DOM)
 
-With this we're ready to to stitch server updates (reads **and** updates) with
+With this we're ready to stitch server updates (reads **and** updates) with
 DOM updating and event handling. We're almost ready to build the "Simple
 Liker" from scratch!
 
