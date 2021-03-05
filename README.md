@@ -41,8 +41,10 @@ called [`json-server`][json-server]. The JSON Server allows us to start a fake
 RESTful API within our lab folder, giving us the ability to send both GET and
 POST requests and to persist and receive data.
 
-Install it by executing `npm install -g json-server`.  To start up JSON Server,
-run `json-server --watch db.json` in your terminal.
+Install it by executing `npm install -g json-server`. (If this command errors
+out, you may need to run `sudo npm install -g json-server` instead; you will likely need to provide your
+system password.) To start up JSON Server, run `json-server --watch db.json` in
+your terminal.
 
 Once the server is running, you'll see a list of available resource paths:
 
@@ -397,7 +399,7 @@ a message in the DOM for a user, rather than leave them with nothing.
 ## Challenge
 
 It's time to practice writing your own POST request using `fetch()`. In
-`index.js`, write a method, `submitData`, that takes two strings arguments, one
+`index.js`, write a function, `submitData`, that takes two strings arguments, one
 representing a user's name and the other representing a user's email.
 
 The first two tests mirror the behavior of the JSON server. As you write your
