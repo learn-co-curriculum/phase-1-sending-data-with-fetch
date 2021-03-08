@@ -63,9 +63,9 @@ RESTful API, sending a request to 'http://localhost:3000/dogs' will return all
 records in the database for dogs, while 'http://localhost:3000/dogs/1' will
 return the dog with the id of 1.
 
-Some example data is already present, stored in `db.json`. If the JSON
-server is running, you can also visit any of the above resources in a browser to
-see the data.
+Some example data is already present, stored in `db.json`. If the JSON server is
+running, you can also visit any of the above resources in a browser to see the
+data.
 
 The tests in this lab do not need JSON Server to be running, but if you would
 like to run tests while also running the server, open a second tab in your
@@ -307,8 +307,8 @@ fetch("http://localhost:3000/dogs", configObj);
 All three approaches yield the same results!
 
 **Note**: As a security precaution, most modern websites block the ability to
-use `fetch()` in console while on their website, so if you are testing out
-code in browser, make sure to be on a page like `index.html` or
+use `fetch()` in console while on their website, so if you are testing out code
+in the browser, make sure to be on a page like `index.html` or
 `sample_form.html`.
 
 ## Handling What Happens After
@@ -322,12 +322,12 @@ given function _callbacks_.
 Building on the previous implementation we might write the following:
 
 ```js
-let formData = {
+const formData = {
   dogName: "Byron",
   dogBreed: "Poodle"
 };
 
-let configObj = {
+const configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -353,8 +353,8 @@ JavaScript object. The result of `json()` is returned and made available in the
 _second_ `then()`. In this example, whatever `response.json()` returns will be
 logged in `console.log(object)`.
 
-Sending the example above to our JSON server, once the request is successfully
-resolved, we would see the following log:
+Let's go ahead and send the example above to our JSON server in the console;
+once the request is successfully resolved, you should see the following log:
 
 ```js
 {dogName: "Byron", dogBreed: "Poodle", id: 6} // Your ID value may be different
@@ -369,9 +369,9 @@ When something goes wrong in a `fetch()` request, JavaScript will look down the
 chain of `.then()` calls for something very similar to a `then()` called a
 `catch()`.
 
-When something goes wrong in a `fetch()`, `catch()` is called, which allows us
-to write code to "handle" the error. Say for instance, we forgot to add the HTTP
-verb to our POST request, and the `fetch()` defaults to GET. By including a
+When something goes wrong in a `fetch()`, `catch()` will be called; this allows
+us to write code to "handle" the error. Say for instance, we forgot to add the
+HTTP verb to our POST request, and the `fetch()` defaults to GET. By including a
 `catch()` statement, JavaScript doesn't fail silently:
 
 ```js
@@ -447,7 +447,7 @@ On a successful POST request, expect the server to respond with a
 `body` property of this response will contain the data from the POST request
 along with a newly assigned _id_.
 
-Use a `then()` call to access the `Response` object and use its built in
+Use a `then()` call to access the `Response` object and use its built-in
 `json()` method to parse the contents of the `body` property. Use a _second_
 `then()` to access this newly converted object. From this object, find the new
 id and append this value to the DOM.
@@ -463,7 +463,7 @@ add a `catch()`.
 
 When writing the callback function for your `catch()`, expect to receive an
 object on error with a property, `message`, containing info about what went
-wrong. Append this message to the DOM when `catch()` is called.
+wrong. Write code to append this message to the DOM when `catch()` is called.
 
 ### Test 4 - Return the Fetch Chain
 
