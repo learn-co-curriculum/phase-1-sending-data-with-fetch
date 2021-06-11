@@ -9,14 +9,14 @@
 ## Introduction
 
 If you think about it, `fetch()` is a little browser in your browser. You tell
-`fetch()` to go to a URL by passing it an argument e.g.
-`fetch("https://flatironschool.com")` and it makes a network request. You
+`fetch()` to go to a URL by passing it an argument, e.g.
+`fetch("https://flatironschool.com")`, and it makes a network request. You
 chain calls to `fetch()` with `then()`. Each `then()` call takes a callback
-function as its argument, based on actions in the callback function, we can
-display the content, update it, or inject it into the DOM.
+function as its argument. Based on actions in the callback function, we can
+display or update content in the DOM.
 
 This is a lot like browsing the web: you change the URL in the URL bar, or you
-follow a link and those actions tell the browser to go somewhere else and get
+follow a link, and those actions tell the browser to go somewhere else and get
 the data. A technical way to describe that is: "The browser implements an HTTP
 `GET` to retrieve the content at a URL." It's also 100% technically correct to
 say "`fetch()` uses an HTTP `GET` to retrieve the content specified by a URL."
@@ -24,15 +24,16 @@ say "`fetch()` uses an HTTP `GET` to retrieve the content specified by a URL."
 The browser also provides a helpful model for understanding what _sending_ data
 from the browser looks like. We know this as an HTML _form_. Technically
 speaking, HTML forms "use an HTTP `POST` to send content gathered in `<input>`
-elements to a specified URL" It's also 100% technically correct to say
-"`fetch()` uses an HTTP `POST` to send content gathered in a JavaScript `Object`
+elements to a specified URL." It's also 100% technically correct to say
+"`fetch()` uses an HTTP `POST` to send content gathered in a JavaScript
+`Object`."
 
 HTML forms are still widely used, but with `fetch()`, we have more detailed
 control of the request. Using `fetch()`, we can actually _override_ the normal
-behavior of an HTML form, capturing any user input, packaging it up with
-the appropriate request information and sending it out.
+behavior of an HTML form, capture any user input, package it up with the
+appropriate request information and send it out.
 
-Our focus this lesson will be to learning how to send data using `fetch()`.
+Our focus in this lesson will be learning how to send data using `fetch()`.
 
 ## Introduce the JSON Server
 
@@ -41,10 +42,13 @@ called [`json-server`][json-server]. The JSON Server allows us to start a fake
 RESTful API within our lab folder, giving us the ability to send both GET and
 POST requests and to persist and receive data.
 
-Install it by executing `npm install -g json-server`.  To start up JSON Server,
-run `json-server --watch db.json` in your terminal.
+Install it by executing `npm install -g json-server`. (If this command errors
+out, you may need to run `sudo npm install -g json-server` instead; you will
+likely also need to provide your system password.) To start up JSON Server, run
+`json-server --watch db.json` in your terminal.
 
-Once the server is running, you'll see a list of available resource paths:
+Once the server is running, you'll see a list of available resource paths in the
+terminal:
 
 ```bash
 Resources
@@ -59,9 +63,9 @@ RESTful API, sending a request to 'http://localhost:3000/dogs' will return all
 records in the database for dogs, while 'http://localhost:3000/dogs/1' will
 return the dog with the id of 1.
 
-Some example data is already present, stored in `db.json`. If the JSON
-server is running, you can also visit any of the above resources in a browser to
-see the data.
+Some example data is already present, stored in `db.json`. If the JSON server is
+running, you can also visit any of the above resources in a browser to see the
+data.
 
 The tests in this lab do not need JSON Server to be running, but if you would
 like to run tests while also running the server, open a second tab in your
@@ -69,56 +73,60 @@ terminal.
 
 ## Analyze Data Sent in an HTML Form
 
-Let's take a look at a `<form>` (_see `sample_form.html` in this repo_):
+Let's take a look at an HTML `<form>` (_see `sample_form.html` in this repo_):
 
 ```html
 <form action="http://localhost:3000/dogs" method="POST">
   <label> Dog Name: <input type="text" name="dogName" id="dogName" /></label><br />
   <label> Dog Breed: <input type="text" name="dogBreed" id="dogBreed" /></label><br />
-  <input type="submit" name="submit" id="submit" value="Submit" />
+  <input type="submit" id="submit" value="Submit" />
 </form>
 ```
 
-The key components as far as sending data to the server are:
+When we use the `<form>` element's default POST behavior in combination with a
+backend server, the key components for sending the submitted data to the server
+are:
 
 - The destination URL as defined in the `action` attribute of the `<form>` tag
 - The HTTP verb to use as defined in the `method` attribute of the `<form>` tag
-- The key / value data about the inputs in the fields `dogName` and `dogBreed`
+- The key / value data obtained from the inputs in the fields `dogName` and
+  `dogBreed`
 
-We should expect that our "mini-browser," `fetch()` will need those same bits
-of information in order to send data to the server. Let's place this data
-inside our `form()` skeleton.
+We should expect that our "mini-browser," `fetch()`, will need those same bits
+of information in order to send a Post request to the server.
 
-> **Note**: if you have the JSON server running and open `sample_form.html`,
-> you will be able to submit the form and successfully POST data to the JSON
-> server database, `db.json`. Try it out!
+> **Note**: with JSON Server and our HTML form, we already have what we need to
+> submit our form the conventional way, without using JavaScript. To try this
+> out, make sure the JSON server is running and open `sample_form.html` in the
+> browser. If you enter a dog name and breed in the input fields and click
+> "Submit," your information should successfully POST to the JSON server
+> database, `db.json`.
 
 ## Construct a POST Request Using `fetch()`
 
 Sending a POST request with `fetch()` is more complicated than what we've seen
-up to this point. It still takes a `String` representing the desintation URL as
+up to this point. It still takes a `String` representing the destination URL as
 the first argument, as always. But as we will see below, `fetch()` can also take
-a JavaScript `Object` (`{}`) as the _second_ argument. This `Object` can be
-given certain [properties][p] with certain values in order to change `fetch()`'s
-default behavior.
+a JavaScript `Object` as the _second_ argument. This `Object` can be given
+certain [properties][p] that can be used to change `fetch()`'s default behavior.
 
 ```js
 fetch(destinationURL, configurationObject);
 ```
 
 The `configurationObject` contains three core components that are needed for
-standard POST requests.
+standard POST requests: the HTTP verb, the headers, and the body.
 
 ### Add the HTTP Verb
 
 So far, comparing to an HTML form, we've only got the destination URL
-('http://localhost:3000/dogs' in this case). The next thing we need is to
-include the HTTP verb. By default, the verb is GET, which is why we can send
-simple GET requests with _only_ a destination URL. To tell `fetch()` that this
-is a POST request, we need to add a `method` key to our `configurationObject`:
+('http://localhost:3000/dogs' in this case). The next thing we need to include
+is the HTTP verb. By default, the verb is GET, which is why we can send simple
+GET requests with _only_ a destination URL. To tell `fetch()` that this is a
+POST request, we need to add a `method` property to our `configurationObject`:
 
 ```js
-configurationObject = {
+const configurationObject = {
   method: "POST"
 };
 ```
@@ -137,7 +145,7 @@ make sure that the destination of our POST request knows this. To do this, we'll
 include the `"Content-Type"` header:
 
 ```js
-configurationObject = {
+const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -146,7 +154,7 @@ configurationObject = {
 ```
 
 Each individual header is stored as a key/value pair inside an object. This
-object is assigned to the `headers` key as seen above.
+object is assigned as the value of the `headers` property as seen above.
 
 When sending data, the server at the destination URL will send back a response,
 often including data that the sender of the `fetch()` request might find useful.
@@ -158,7 +166,7 @@ To do this, we add a second header, [`"Accept"`][accept], and assign it to
 `"application/json"` as well:
 
 ```js
-configurationObject = {
+const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -185,7 +193,7 @@ Data being sent in `fetch()` must be stored in the `body` of the
 `configurationObject`:
 
 ```js
-configurationObject = {
+const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -195,7 +203,7 @@ configurationObject = {
 };
 ```
 
-There is a catch here to be aware of - when data is exchanged between a client
+There is a catch here to be aware of — when data is exchanged between a client
 (your browser, for instance), and a server, the data is sent as _text_. Whatever
 data we're assigning to the `body` of our request needs to be a string.
 
@@ -231,7 +239,7 @@ strings, `JSON.stringify()`. By passing an object in, `JSON.stringify()` will
 return a string, formatted and ready to send in our request:
 
 ```js
-configurationObject = {
+const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -263,19 +271,28 @@ fetch("http://localhost:3000/dogs", {
 ```
 
 With the JSON server running, if you open up `sample_form.html` or `index.html`,
-you can use the above to successfully send a POST request and persist data to
-`db.json`.
+you can test out the code above in the console. Try it and take a look in
+`db.json`: you should see that Byron the Poodle has been successfully persisted
+to our database.
 
-Obviously, we don't have to define everything inside of one anonymous `Object`.
-We could also write (they're exactly the same!):
+Note that we aren't using the `configurationObject` variable we defined earlier
+in the code above. Obviously, we don't have to define all our configuration
+information inside of one anonymous `Object`. If we instead used our
+`configurationObject` variable, our call to `fetch()` would look like this:
 
 ```js
-let formData = {
+fetch("http://localhost:3000/dogs", configurationObject);
+```
+
+Or we could also split out the body of our request into a variable:
+
+```js
+const formData = {
   dogName: "Byron",
   dogBreed: "Poodle"
 };
 
-let configObj = {
+const configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -287,9 +304,11 @@ let configObj = {
 fetch("http://localhost:3000/dogs", configObj);
 ```
 
+All three approaches yield the same results!
+
 **Note**: As a security precaution, most modern websites block the ability to
-use `fetch()` in console while on their website, so if you are testing out
-code in browser, make sure to be on a page like `index.html` or
+use `fetch()` in console while on their website, so if you are testing out code
+in the browser, make sure to be on a page like `index.html` or
 `sample_form.html`.
 
 ## Handling What Happens After
@@ -303,12 +322,12 @@ given function _callbacks_.
 Building on the previous implementation we might write the following:
 
 ```js
-let formData = {
+const formData = {
   dogName: "Byron",
   dogBreed: "Poodle"
 };
 
-let configObj = {
+const configObj = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -334,11 +353,11 @@ JavaScript object. The result of `json()` is returned and made available in the
 _second_ `then()`. In this example, whatever `response.json()` returns will be
 logged in `console.log(object)`.
 
-Sending the example above to our JSON server, once the request is successfully
-resolved, we would see the following log:
+Let's go ahead and send the example above to our JSON server in the console;
+once the request is successfully resolved, you should see the following log:
 
 ```js
-{dogName: "Byron", dogBreed: "Poodle", id: 6} // Your ID will vary depending
+{dogName: "Byron", dogBreed: "Poodle", id: 6} // Your ID value may be different
 ```
 
 The JSON server is sending back the data we sent, along with a new piece of
@@ -350,10 +369,10 @@ When something goes wrong in a `fetch()` request, JavaScript will look down the
 chain of `.then()` calls for something very similar to a `then()` called a
 `catch()`.
 
-When something goes wrong in a `fetch()`, the next `catch()` is called so that
-error work can be performed. Say for instance, we forgot to add the HTTP verb to
-our POST request, and the `fetch()` defaults to GET. By including a `catch()`
-statement, JavaScript doesn't fail silently:
+When something goes wrong in a `fetch()`, `catch()` will be called; this allows
+us to write code to "handle" the error. Say for instance, we forgot to add the
+HTTP verb to our POST request, and the `fetch()` defaults to GET. By including a
+`catch()` statement, JavaScript doesn't fail silently:
 
 ```js
 let formData = {
@@ -383,8 +402,9 @@ fetch("http://localhost:3000/dogs", configObj)
   });
 ```
 
-Sent to our JSON server from a page like `index.html`, we would receive an
-alert window pop-up and a logged message:
+If you try the code above in the console from `index.html` or
+`sample_form.html`, you should receive an alert window pop-up and a logged
+message:
 
 ```text
 Failed to execute 'fetch' on 'Window': Request with GET/HEAD method cannot have body.
@@ -397,15 +417,15 @@ a message in the DOM for a user, rather than leave them with nothing.
 ## Challenge
 
 It's time to practice writing your own POST request using `fetch()`. In
-`index.js`, write a method, `submitData`, that takes two strings arguments, one
-representing a user's name and the other representing a user's email.
+`index.js`, write a function, `submitData`, that takes two strings as arguments,
+one representing a user's name and the other representing a user's email.
 
 The first two tests mirror the behavior of the JSON server. As you write your
 solution, keep the server running to test your code. Open `index.html` in a
 browser to gain access to your `submitData` function in console.
 
 **Note**: The tests in this lab need access to the `fetch()` request inside
-`submitData`. In order to give them access, write you solution so that
+`submitData`. In order to give them access, write your solution so that
 `submitData` _returns_ the `fetch()`. This will not change the behavior of
 your `fetch()`.
 
@@ -415,7 +435,7 @@ In `submitData`, write a valid POST request to `http://localhost:3000/users`
 using `fetch()`. This request should include:
 
 - The destination URL
-- Headers for 'Content-Type' and 'Accept' set to 'application/json'
+- Headers for 'Content-Type' and 'Accept', both set to 'application/json'
 - A body with the name and email passed in as arguments to `submitData`. These
   should be assigned to `name` and `email` keys within an object. This object
   should then be stringified.
@@ -427,13 +447,14 @@ On a successful POST request, expect the server to respond with a
 `body` property of this response will contain the data from the POST request
 along with a newly assigned _id_.
 
-Use a `then()` call to access the `Response` object and use its built in
+Use a `then()` call to access the `Response` object and use its built-in
 `json()` method to parse the contents of the `body` property. Use a _second_
 `then()` to access this newly converted object. From this object, find the new
 id and append this value to the DOM.
 
-Using `index.html` and the JSON server, if your code is successful, calling
-`submitData` in the console should cause an id number to appear on the page.
+If JSON Server is running and `index.html` is open in the browser, you can test
+your code in the console: calling `submitData()` in the console should cause an
+id number to appear on the page.
 
 ### Test 3 - Handle Errors
 
@@ -442,25 +463,25 @@ add a `catch()`.
 
 When writing the callback function for your `catch()`, expect to receive an
 object on error with a property, `message`, containing info about what went
-wrong. Append this message to the DOM when `catch()` is called.
+wrong. Write code to append this message to the DOM when `catch()` is called.
 
 ### Test 4 - Return the Fetch Chain
 
 An amazing feature of `fetch()` is that if you _return_ it, _other_ functions
-can tack-on _their own_ `then()` and `catch()` calls. While we won't explore
+can tack on _their own_ `then()` and `catch()` calls. While we won't explore
 this amazing idea in this lesson, let's learn good habits and be sure to return
 the `fetch()` chain from our `submitData` function.
 
 ## Conclusion
 
-Congratulations! You can now use `fetch()`: the browser inside your browser's
-JavaScript environment to both:
+Congratulations! You can now use `fetch()` — the browser inside your browser's
+JavaScript environment — to both:
 
-- READ data using HTTP GET (whose response you can put into the DOM)
-- SEND data using HTTP POST (whose response you can put into the DOM)
+- READ data using HTTP GET (and use the response to update the DOM)
+- SEND data using HTTP POST (and use the response to update the DOM)
 
-With this we're ready to to stitch server updates (reads **and** updates) with
-DOM updating and event handling. We're almost ready to build the "Simple
+With this we're ready to stitch together server updates (reads **and** updates)
+with DOM updating and event handling. We're almost ready to build the "Simple
 Liker" from scratch!
 
 [json-server]: https://github.com/typicode/json-server
@@ -471,3 +492,4 @@ Liker" from scratch!
 [accept]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
 [jsonstringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [jsonobject]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
+[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
