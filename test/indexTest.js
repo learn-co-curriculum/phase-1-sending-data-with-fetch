@@ -4,13 +4,12 @@ const spies = require( 'chai-spies' );
 const nock = require( 'nock' );
 chai.use( spies );
 
+const rando = Math.ceil( Math.random() * 1000 )
+
 describe( "submitData()", () => {
-  let rando
   let xhr, requests
   beforeEach( function () {
     window.fetch = require( 'node-fetch' );
-
-    rando = Math.ceil( Math.random() * 1000 )
 
 
 

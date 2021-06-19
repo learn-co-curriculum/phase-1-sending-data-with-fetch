@@ -44,8 +44,12 @@ POST requests and to persist and receive data.
 
 Install it by executing `npm install -g json-server`. (If this command errors
 out, you may need to run `sudo npm install -g json-server` instead; you will
-likely also need to provide your system password.) To start up JSON Server, run
-`json-server --watch db.json` in your terminal.
+likely also need to provide your system password.)
+
+To start up JSON Server, run `json-server --watch db.json` in your terminal.
+**Note**: Running this command will instruct `json-server` to use a `db.json`
+file in your terminal's current directory, so make sure to run this command from
+the same directory as this lab.
 
 Once the server is running, you'll see a list of available resource paths in the
 terminal:
