@@ -473,21 +473,36 @@ wrong. Write code to append this message to the DOM when `catch()` is called.
 ### Test 4 - Return the Fetch Chain
 
 An amazing feature of `fetch()` is that if you _return_ it, _other_ functions
-can tack on _their own_ `then()` and `catch()` calls. While we won't explore
-this amazing idea in this lesson, let's learn good habits and be sure to return
-the `fetch()` chain from our `submitData` function.
+can tack on _their own_ `then()` and `catch()` calls. **For this lab, you will
+need to return the `fetch()` chain from our `submitData` function to ensure that
+the tests run correctly.**
 
 ## Conclusion
 
-Congratulations! You can now use `fetch()` — the browser inside your browser's
-JavaScript environment — to both:
+In this lab, we learned how to use `fetch` requests to post data to a server.
+This allows us to override the default behavior of an HTML `<form>` element and
+have greater control over the behavior of our form when it is submitted. It also
+enables to improve our users' experience by rendering content without reloading
+the page.
 
-- READ data using HTTP GET (and use the response to update the DOM)
-- SEND data using HTTP POST (and use the response to update the DOM)
+Specifically, we learned:
 
-With this we're ready to stitch together server updates (reads **and** updates)
-with DOM updating and event handling. We're almost ready to build the "Simple
-Liker" from scratch!
+- In order to submit a `POST` request, we call `fetch()` and pass it two
+  arguments: the URL we're submitting the request to, and an object containing
+  details about the request.
+- This 'configuration' object needs to contain three properties: the `method`
+  ("POST" in this case), `headers` that provide some information about our
+  request, and the `body` of the request (i.e., the content we want to post).
+- The body must be "stringified" before it can be passed in the request.
+- Just as with a `GET` request, the `POST` request returns a `Response` object
+  that can be accessed and used to update the DOM using chained `then` calls.
+- In addition to the `then`s, you can also chain a `catch()` function that
+  will "handle" unsuccessful requests.
+
+With this information, you can now use `fetch()` to send both `GET` and `POST`
+requests! This means we have the tools we need to stitch together server updates
+(reads **and** updates) with DOM updating and event handling. We're almost ready
+to build the "Simple Liker" from scratch!
 
 [json-server]: https://github.com/typicode/json-server
 [p]: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters
