@@ -68,7 +68,7 @@ terminal.
 
 ## Analyze Data Sent in an HTML Form
 
-Let's take a look at an HTML `<form>` (_see `sample_form.html` in this repo_):
+Let's take a look at an HTML `<form>` (see `sample_form.html` in this repo):
 
 ```html
 <form action="http://localhost:3000/dogs" method="POST">
