@@ -35,16 +35,7 @@ appropriate request information and send it out.
 
 Our focus in this lesson will be learning how to send data using `fetch()`.
 
-## Introduce the JSON Server
-
-To help us practice sending `fetch()` requests, this lab comes with a dependency
-called [`json-server`][json-server]. The JSON Server allows us to start a fake
-RESTful API within our lab folder, giving us the ability to send both GET and
-POST requests and to persist and receive data.
-
-Install it by executing `npm install -g json-server`. (If this command errors
-out, you may need to run `sudo npm install -g json-server` instead; you will
-likely also need to provide your system password.)
+## Using JSON Server to Mimic a Backend Database
 
 To start up JSON Server, run `json-server --watch db.json` in your terminal.
 **Note**: Running this command will instruct `json-server` to use a `db.json`
@@ -238,7 +229,7 @@ within the string. When sent to a server, the server will be able to take this
 string and convert it back into key/value pairs in whatever language the server
 is written in.
 
-Fortunately, JavaScript comes with a built in method for converting objects to
+Fortunately, JavaScript comes with a built-in method for converting objects to
 strings, `JSON.stringify()`. By passing an object in, `JSON.stringify()` will
 return a string, formatted and ready to send in our request:
 
@@ -261,6 +252,52 @@ const configurationObject = {
 We've got all the pieces we need. Putting it all together, we get:
 
 ```js
+const configurationObject = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    dogName: "Byron",
+    dogBreed: "Poodle"
+  })
+};
+
+fetch("http://localhost:3000/dogs", configurationObject);
+```
+
+With the JSON server running, if you open up `sample_form.html` or `index.html`,
+you can test out the code above in the console. Try it and take a look in
+`db.json`: you should see that Byron the Poodle has been successfully persisted
+to our database.
+
+We can make our code a bit more general by splitting out the body of our request
+into a variable:
+
+```js
+const formData = {
+  dogName: "Byron",
+  dogBreed: "Poodle"
+};
+
+const configurationObject = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  body: JSON.stringify(formData)
+};
+
+fetch("http://localhost:3000/dogs", configurationObject);
+```
+
+Using the `formData` and `configurationObject` variables helps make our code
+more readable and flexible, but, of course, we could instead just pass an
+anonymous object as the second argument to `fetch()`:
+
+```js
 fetch("http://localhost:3000/dogs", {
   method: "POST",
   headers: {
@@ -272,40 +309,6 @@ fetch("http://localhost:3000/dogs", {
     dogBreed: "Poodle"
   })
 });
-```
-
-With the JSON server running, if you open up `sample_form.html` or `index.html`,
-you can test out the code above in the console. Try it and take a look in
-`db.json`: you should see that Byron the Poodle has been successfully persisted
-to our database.
-
-Note that we aren't using the `configurationObject` variable we defined earlier
-in the code above. Obviously, we don't have to define all our configuration
-information inside of one anonymous `Object`. If we instead used our
-`configurationObject` variable, our call to `fetch()` would look like this:
-
-```js
-fetch("http://localhost:3000/dogs", configurationObject);
-```
-
-Or we could also split out the body of our request into a variable:
-
-```js
-const formData = {
-  dogName: "Byron",
-  dogBreed: "Poodle"
-};
-
-const configObj = {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  },
-  body: JSON.stringify(formData)
-};
-
-fetch("http://localhost:3000/dogs", configObj);
 ```
 
 All three approaches yield the same results!
@@ -331,7 +334,7 @@ const formData = {
   dogBreed: "Poodle"
 };
 
-const configObj = {
+const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -340,7 +343,7 @@ const configObj = {
   body: JSON.stringify(formData)
 };
 
-fetch("http://localhost:3000/dogs", configObj)
+fetch("http://localhost:3000/dogs", configurationObject)
   .then(function(response) {
     return response.json();
   })
@@ -351,7 +354,7 @@ fetch("http://localhost:3000/dogs", configObj)
 
 Notice that the first `then()` is passed a callback function that takes in
 `response` as an argument. This is a [`Response`][response] object, representing
-what the destination server sent back to us. This object has a built in method,
+what the destination server sent back to us. This object has a built-in method,
 `json()`, that converts the _body_ of the response from JSON to a plain old
 JavaScript object. The result of `json()` is returned and made available in the
 _second_ `then()`. In this example, whatever `response.json()` returns will be
@@ -371,21 +374,19 @@ data, an `id`, created by the server.
 
 When something goes wrong in a `fetch()` request, JavaScript will look down the
 chain of `.then()` calls for something very similar to a `then()` called a
-`catch()`.
-
-When something goes wrong in a `fetch()`, `catch()` will be called; this allows
-us to write code to "handle" the error. Say for instance, we forgot to add the
-HTTP verb to our POST request, and the `fetch()` defaults to GET. By including a
-`catch()` statement, JavaScript doesn't fail silently:
+`catch()` and, if it exists, execute it. This allows us to write code to "handle"
+the error. Say for instance, we forgot to add the HTTP verb to our POST request,
+and the `fetch()` defaults to GET. By including a `catch()` statement,
+JavaScript doesn't fail silently:
 
 ```js
-let formData = {
+const formData = {
   dogName: "Byron",
   dogBreed: "Poodle"
 };
 
 // method: "POST" is missing from the object below
-let configObj = {
+const configurationObject = {
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json"
@@ -393,7 +394,7 @@ let configObj = {
   body: JSON.stringify(formData)
 };
 
-fetch("http://localhost:3000/dogs", configObj)
+fetch("http://localhost:3000/dogs", configurationObject)
   .then(function(response) {
     return response.json();
   })
