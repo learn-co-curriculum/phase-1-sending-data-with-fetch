@@ -66,6 +66,15 @@ The tests in this lab do not need JSON Server to be running, but if you would
 like to run tests while also running the server, open a second tab in your
 terminal.
 
+> **Note**: For users of the [Live Server VSCode extension][live-server], if the 
+> page is reloading when you initiate a fetch request, you'll need to 
+> set up some additional configuration for Live Server to play nicely with 
+> `json-server`. Follow the steps in [this gist][live-server settings] (you'll 
+> only need to do this once), then come back to this lesson.
+
+[live-server]: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
+[live-server settings]: https://gist.github.com/ihollander/cc5f36c6447d15dea6a16f68d82aacf7
+
 ## Analyze Data Sent in an HTML Form
 
 Let's take a look at an HTML `<form>` (see `sample_form.html` in this repo):
