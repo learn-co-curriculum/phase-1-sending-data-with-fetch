@@ -10,10 +10,10 @@
 
 If you think about it, `fetch()` is a little browser in your browser. You tell
 `fetch()` to go to a URL by passing it an argument, e.g.
-`fetch("https://flatironschool.com")`, and it makes a network request. You
-chain calls to `fetch()` with `then()`. Each `then()` call takes a callback
-function as its argument. Based on actions in the callback function, we can
-display or update content in the DOM.
+`fetch("https://flatironschool.com")`, and it makes a network request. You chain
+calls to `fetch()` with `then()`. Each `then()` call takes a callback function
+as its argument. Based on actions in the callback function, we can display or
+update content in the DOM.
 
 This is a lot like browsing the web: you change the URL in the URL bar, or you
 follow a link, and those actions tell the browser to go somewhere else and get
@@ -45,7 +45,7 @@ the same directory as this lab.
 Once the server is running, you'll see a list of available resource paths in the
 terminal:
 
-```bash
+```console
 Resources
   http://localhost:3000/dogs
   http://localhost:3000/cats
@@ -66,10 +66,10 @@ The tests in this lab do not need JSON Server to be running, but if you would
 like to run tests while also running the server, open a second tab in your
 terminal.
 
-> **Note**: For users of the [Live Server VSCode extension][live-server], if the 
-> page is reloading when you initiate a fetch request, you'll need to 
-> set up some additional configuration for Live Server to play nicely with 
-> `json-server`. Follow the steps in [this gist][live-server settings] (you'll 
+> **Note**: For users of the [Live Server VSCode extension][live-server], if the
+> page is reloading when you initiate a fetch request, you'll need to
+> set up some additional configuration for Live Server to play nicely with
+> `json-server`. Follow the steps in [this gist][live-server settings] (you'll
 > only need to do this once), then come back to this lesson.
 
 [live-server]: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
@@ -81,8 +81,10 @@ Let's take a look at an HTML `<form>` (see `sample_form.html` in this repo):
 
 ```html
 <form action="http://localhost:3000/dogs" method="POST">
-  <label> Dog Name: <input type="text" name="dogName" id="dogName" /></label><br />
-  <label> Dog Breed: <input type="text" name="dogBreed" id="dogBreed" /></label><br />
+  <label> Dog Name: <input type="text" name="dogName" id="dogName" /></label
+  ><br />
+  <label> Dog Breed: <input type="text" name="dogBreed" id="dogBreed" /></label
+  ><br />
   <input type="submit" id="submit" value="Submit" />
 </form>
 ```
@@ -131,7 +133,7 @@ POST request, we need to add a `method` property to our `configurationObject`:
 
 ```js
 const configurationObject = {
-  method: "POST"
+  method: "POST",
 };
 ```
 
@@ -152,8 +154,8 @@ include the `"Content-Type"` header:
 const configurationObject = {
   method: "POST",
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 };
 ```
 
@@ -174,8 +176,8 @@ const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
-  }
+    Accept: "application/json",
+  },
 };
 ```
 
@@ -247,12 +249,12 @@ const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
   body: JSON.stringify({
     dogName: "Byron",
-    dogBreed: "Poodle"
-  })
+    dogBreed: "Poodle",
+  }),
 };
 ```
 
@@ -265,12 +267,12 @@ const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
   body: JSON.stringify({
     dogName: "Byron",
-    dogBreed: "Poodle"
-  })
+    dogBreed: "Poodle",
+  }),
 };
 
 fetch("http://localhost:3000/dogs", configurationObject);
@@ -287,16 +289,16 @@ into a variable:
 ```js
 const formData = {
   dogName: "Byron",
-  dogBreed: "Poodle"
+  dogBreed: "Poodle",
 };
 
 const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
-  body: JSON.stringify(formData)
+  body: JSON.stringify(formData),
 };
 
 fetch("http://localhost:3000/dogs", configurationObject);
@@ -311,12 +313,12 @@ fetch("http://localhost:3000/dogs", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
   body: JSON.stringify({
     dogName: "Byron",
-    dogBreed: "Poodle"
-  })
+    dogBreed: "Poodle",
+  }),
 });
 ```
 
@@ -340,23 +342,23 @@ Building on the previous implementation we might write the following:
 ```js
 const formData = {
   dogName: "Byron",
-  dogBreed: "Poodle"
+  dogBreed: "Poodle",
 };
 
 const configurationObject = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
-  body: JSON.stringify(formData)
+  body: JSON.stringify(formData),
 };
 
 fetch("http://localhost:3000/dogs", configurationObject)
-  .then(function(response) {
+  .then(function (response) {
     return response.json();
   })
-  .then(function(object) {
+  .then(function (object) {
     console.log(object);
   });
 ```
@@ -391,26 +393,26 @@ JavaScript doesn't fail silently:
 ```js
 const formData = {
   dogName: "Byron",
-  dogBreed: "Poodle"
+  dogBreed: "Poodle",
 };
 
 // method: "POST" is missing from the object below
 const configurationObject = {
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json"
+    Accept: "application/json",
   },
-  body: JSON.stringify(formData)
+  body: JSON.stringify(formData),
 };
 
 fetch("http://localhost:3000/dogs", configurationObject)
-  .then(function(response) {
+  .then(function (response) {
     return response.json();
   })
-  .then(function(object) {
+  .then(function (object) {
     console.log(object);
   })
-  .catch(function(error) {
+  .catch(function (error) {
     alert("Bad things! Ragnarők!");
     console.log(error.message);
   });
