@@ -493,7 +493,7 @@ the tests run correctly.**
 In this lab, we learned how to use `fetch` requests to post data to a server.
 This allows us to override the default behavior of an HTML `<form>` element and
 have greater control over the behavior of our form when it is submitted. It also
-enables to improve our users' experience by rendering content without reloading
+enables us to improve our users' experience by rendering content without reloading
 the page.
 
 Specifically, we learned:
