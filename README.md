@@ -186,8 +186,8 @@ used to send credentials or user authentication keys. Others are used to send
 cookies containing user info. `"Content-Type"` and `"Accept"` are two that we'll
 see the most throughout the remainder of this course.
 
-Servers may reject requests without the specific headers the server is
-configured to expect.
+A server that expects requests with specific headers may reject requests that
+don't include those headers.
 
 ### Add Data
 
